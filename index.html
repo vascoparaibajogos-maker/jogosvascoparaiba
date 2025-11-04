@@ -1,0 +1,167 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Jogos do Vasco - Torcida Vasco Paraíba</title>
+  <style>
+    :root{/*--bg:#000;--fg:#fff;--muted:rgba(255,255,255,0.75);--gold:#ffd700*/}
+    html,body{height:100%;margin:0;font-family:Inter,system-ui,Segoe UI,Arial;background:#000;color:#fff}
+    /* background image as translucent fixed layer */
+    body::before{content:'';position:fixed;inset:0;background-image:url('baixados.jpg');background-size:cover;background-position:center;opacity:0.15;z-index:0;pointer-events:none;filter:contrast(0.9) saturate(0.6);}
+    header{position:relative;z-index:2;padding:28px 16px;text-align:center;background:linear-gradient(180deg,rgba(0,0,0,0.6),rgba(0,0,0,0.15))}
+    .logo{width:140px;display:block;margin:0 auto 8px}
+    h1{margin:0;font-size:1.6rem;text-transform:uppercase;letter-spacing:0.04em}
+    .tagline{color:rgba(255,255,255,0.75);margin-top:6px;font-size:0.95rem}
+    .container{max-width:980px;margin:20px auto;padding:16px;position:relative;z-index:2}
+    .card{background:rgba(17,17,17,0.80);border:1px solid #222;border-radius:12px;padding:18px;margin-bottom:16px;box-shadow:0 8px 30px rgba(0,0,0,0.6)}
+    table{width:100%;border-collapse:collapse;color:#fff;margin-top:8px}
+    th,td{padding:10px;border-bottom:1px solid rgba(255,255,255,0.05);text-align:left}
+    th{color:rgba(255,255,255,0.75);font-weight:700}
+    tr.next-game{background:linear-gradient(90deg,rgba(255,215,0,0.08),transparent);font-weight:700}
+    .small{font-size:0.95rem;color:rgba(255,255,255,0.75)}
+    .rsvp{display:flex;gap:12px;flex-wrap:wrap;align-items:flex-start}
+    input[type=text]{width:100%;padding:10px;border-radius:8px;border:1px solid #333;background:#0f0f0f;color:#fff}
+    .btn{padding:10px 14px;border-radius:8px;border:0;cursor:pointer;font-weight:700}
+    .btn-primary{background:#ffd700;color:#000}
+    .btn-outline{background:transparent;border:1px solid #fff;color:#fff}
+    .pix-note{margin-top:10px;background:rgba(255,255,255,0.02);padding:12px;border-radius:8px;border:1px solid rgba(255,255,255,0.03)}
+    .pix-key{font-weight:900;color:#ffd700;background:rgba(255,215,0,0.06);padding:4px 6px;border-radius:6px;display:inline-block}
+    .pix-value{font-weight:900;color:#000;background:linear-gradient(90deg,#fff,#ffd700);padding:4px 8px;border-radius:6px;display:inline-block}
+    footer{text-align:center;color:rgba(255,255,255,0.6);margin-top:18px;font-size:0.9rem}
+    a.link{color:#ffd700;text-decoration:underline}
+    @media (max-width:600px){.rsvp{flex-direction:column}}
+  </style>
+</head>
+<body>
+  <header>
+    <img src="ícone_Mascote_Zap_PNG.png" alt="Logo Torcida Vasco Paraíba" class="logo">
+    <h1>Jogos do Vasco - Torcida Vasco Paraíba</h1>
+    <div class="tagline">A distância é apenas um detalhe</div>
+  </header>
+
+  <main class="container">
+    <section class="card">
+      <h2>Próximos jogos</h2>
+      <p class="small">As datas abaixo são os próximos jogos do CR Vasco da Gama. O jogo mais próximo está <strong>grifado</strong>.</p>
+      <table id="fixture" aria-live="polite">
+        <thead>
+          <tr><th>Data</th><th>Confronto</th><th>Competição</th><th>Horário</th></tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+    </section>
+
+    <section class="card" aria-labelledby="rsvp-title">
+      <h2 id="rsvp-title">Confirmação de Presença</h2>
+      <p class="small">Para garantir seu lugar com a torcida siga os passos:</p>
+      <ol class="small">
+        <li>Realize o pagamento via PIX para a chave: <span class="pix-key" id="pixKeyText">louisecrvg@gmail.com</span>.</li>
+        <li>Valor por pessoa: <span class="pix-value">R$ 5,00</span> — <strong>GRIFADO</strong>.</li>
+        <li>Após o pagamento, envie o comprovante pelo WhatsApp da torcida ou preencha o formulário.</li>
+      </ol>
+
+      <div class="rsvp">
+        <div style="flex:1">
+          <label for="name">Seu nome (somente após enviar comprovante)</label><br>
+          <input id="name" type="text" placeholder="Digite seu nome" disabled aria-describedby="pixNote">
+          <div id="pixNote" class="pix-note small">Atenção: o campo para inserir o nome será liberado após você copiar a chave PIX, realizar o pagamento e enviar o comprovante via WhatsApp ou no formulário.</div>
+        </div>
+
+        <div style="min-width:220px">
+          <button id="copyPixBtn" class="btn btn-primary">Copiar chave PIX e pagar</button><br>
+          <button id="sendProofBtn" class="btn btn-outline" style="margin-top:10px">Enviar comprovante (WhatsApp)</button><br>
+          <button id="openFormBtn" class="btn btn-outline" style="margin-top:10px">Abrir formulário</button><br>
+          <button id="confirmBtn" class="btn btn-outline" disabled style="margin-top:10px">Confirmar presença</button>
+        </div>
+      </div>
+
+      <div style="margin-top:12px" class="small">
+        <strong>Importante:</strong> use o botão <em>Copiar chave PIX e pagar</em> para copiar a chave rapidamente. <br>
+        Em seguida, realize o pagamento no seu app bancário e envie o comprovante via WhatsApp:<br>
+        <a class="link" href="https://api.whatsapp.com/send/?phone=5583988110236&text=Olá,%20vou%20enviar%20o%20comprovante%20do%20PIX%20para%20confirmar%20minha%20presença.&type=phone_number&app_absent=0" target="_blank" rel="noopener">Enviar comprovante via WhatsApp</a>.<br>
+        Ou envie pelo formulário: <a class="link" href="https://forms.gle/pSJjUK7K366vCBZ69" target="_blank" rel="noopener">Abrir o formulário</a> (abre em nova aba).
+      </div>
+    </section>
+
+    <section class="card">
+      <h2>Contato</h2>
+      <p class="small">Dúvidas ou informações:</p>
+      <p><strong>Torcida Vasco Paraíba</strong><br>WhatsApp: (83) 98811-0236<br>Email: <a href="mailto:vascoparaibajogos@gmail.com" class="link">vascoparaibajogos@gmail.com</a><br>Instagram: <a class="link" href="https://www.instagram.com/vascoparaiba_/" target="_blank">@vascoparaiba_</a></p>
+    </section>
+
+    <footer>© 2025 Torcida Vasco Paraíba — "A distância é apenas um detalhe"</footer>
+  </main>
+
+  <script>
+    // Fixtures updated (next games)
+    const fixtures = [
+      {'date':'05/11/2025','match':'Botafogo x Vasco','comp':'Campeonato Brasileiro','time':'19:30'},
+      {'date':'08/11/2025','match':'Vasco x Juventude','comp':'Campeonato Brasileiro','time':'18:00'},
+      {'date':'19/11/2025','match':'Grêmio x Vasco','comp':'Campeonato Brasileiro','time':'A definir'},
+      {'date':'23/11/2025','match':'Bahia x Vasco','comp':'Campeonato Brasileiro','time':'18:00'},
+      {'date':'29/11/2025','match':'Vasco x Internacional','comp':'Campeonato Brasileiro','time':'12:00'}
+    ];
+
+    function parseDateBR(str){const [d,m,y]=str.split('/').map(s=>parseInt(s,10));return new Date(y,m-1,d);}
+
+    function renderFixtures(){
+      const tbody=document.querySelector('#fixture tbody');
+      tbody.innerHTML='';
+      const today=new Date();
+      let nextIdx=0;
+      for(let i=0;i<fixtures.length;i++){
+        if(parseDateBR(fixtures[i].date)>=new Date(today.getFullYear(),today.getMonth(),today.getDate())){nextIdx=i;break;}
+      }
+      fixtures.forEach((f,idx)=>{
+        const tr=document.createElement('tr');
+        if(idx===nextIdx)tr.className='next-game';
+        tr.innerHTML=`<td>${f.date}</td><td>${f.match}</td><td>${f.comp}</td><td>${f.time}</td>`;
+        tbody.appendChild(tr);
+      });
+    }
+
+    renderFixtures();
+
+    // PIX copy logic
+    const copyBtn = document.getElementById('copyPixBtn');
+    const pixKeyText = document.getElementById('pixKeyText').innerText;
+    const sendProofBtn = document.getElementById('sendProofBtn');
+    const openFormBtn = document.getElementById('openFormBtn');
+    const nameInput = document.getElementById('name');
+    const confirmBtn = document.getElementById('confirmBtn');
+
+    copyBtn.addEventListener('click', async () => {
+      try{
+        await navigator.clipboard.writeText(pixKeyText);
+        copyBtn.innerText = 'Chave PIX copiada com sucesso!';
+        setTimeout(()=>copyBtn.innerText = 'Copiar chave PIX e pagar',2500);
+        // After copying, focus user's attention: enable open form / whatsapp buttons so they can send proof
+        openFormBtn.focus();
+      }catch(e){
+        alert('Não foi possível copiar automaticamente. Por favor copie manualmente: ' + pixKeyText);
+      }
+    });
+
+    sendProofBtn.addEventListener('click', ()=>{
+      window.open('https://api.whatsapp.com/send/?phone=5583988110236&text=Olá,%20vou%20enviar%20o%20comprovante%20do%20PIX%20para%20confirmar%20minha%20presença.&type=phone_number&app_absent=0','_blank');
+      // allow user to type name after sending proof - administrators will validate
+      setTimeout(()=>{ nameInput.disabled = false; confirmBtn.disabled = false; nameInput.focus(); }, 1200);
+    });
+
+    openFormBtn.addEventListener('click', ()=>{
+      window.open('https://forms.gle/pSJjUK7K366vCBZ69','_blank');
+      setTimeout(()=>{ nameInput.disabled = false; confirmBtn.disabled = false; nameInput.focus(); }, 1200);
+    });
+
+    confirmBtn.addEventListener('click', ()=>{
+      const name = nameInput.value.trim();
+      if(!name){ alert('Por favor, informe seu nome antes de confirmar.'); return; }
+      confirmBtn.innerText = 'Presença confirmada';
+      confirmBtn.disabled = true;
+      nameInput.disabled = true;
+      alert('Obrigado, ' + name + '! Sua presença foi registrada. Os administradores irão conferir o comprovante.');
+    });
+  </script>
+</body>
+</html>
