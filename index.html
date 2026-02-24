@@ -49,14 +49,14 @@
     .card { background:rgba(17,17,17,.8); border:1px solid #222; border-radius:12px; padding:18px; margin-bottom:16px; box-shadow:0 8px 30px rgba(0,0,0,.6) }
 
     table { width:100%; border-collapse:collapse }
-    th,td { padding:10px; border-bottom:1px solid rgba(255,255,255,.06); text-align:left; vertical-align:middle; }
+    th,td { padding:10px; border-bottom:1px solid rgba(255,255,255,.06); text-align:left; }
     th { color:var(--muted); font-weight:700 }
 
     tr.next-game {
-      background:rgba(255,215,0,0.22);
-      font-weight:800 !important;
+      background:rgba(255,215,0,0.25);
+      font-weight:900;
       border:2px solid var(--gold);
-      animation: pulse 2s infinite;
+      animation:pulse 2s infinite;
     }
 
     @keyframes pulse {
@@ -65,33 +65,27 @@
       100% { box-shadow:0 0 6px var(--gold-bright); }
     }
 
-    .small { color:var(--muted); font-size:.95rem }
-    .rsvp { display:flex; gap:12px; flex-wrap:wrap; align-items:flex-start }
-    input[type=text] {
-      width:100%; padding:10px; border-radius:8px;
-      border:1px solid #333; background:#0f0f0f; color:#fff;
-    }
-
     .btn {
-      padding:10px 14px; border-radius:8px;
-      border:0; cursor:pointer; font-weight:700;
-      transition: all 0.18s ease;
+      padding:12px 16px;
+      border-radius:8px;
+      background:var(--gold);
+      color:#000;
+      font-weight:800;
+      border:0;
+      cursor:pointer;
+      text-decoration:none;
+      display:inline-block;
     }
-    .btn-primary { background:var(--gold); color:#000 }
-    .btn-primary:hover { background:var(--gold-bright); }
-    .btn-outline { background:transparent; border:1px solid #fff; color:#fff }
-    .btn-outline:hover { background:#fff; color:#000 }
 
-    .pix-note { margin-top:10px; background:rgba(255,255,255,.03); padding:12px; border-radius:8px; border:1px solid rgba(255,255,255,.05) }
-    .pix-key { font-weight:900; color:var(--gold); background:rgba(255,215,0,.08); padding:4px 6px; border-radius:6px; display:inline-block }
-    .pix-value { font-weight:900; color:#000; background:linear-gradient(90deg,#fff,#ffd700); padding:4px 8px; border-radius:6px; display:inline-block }
-    footer { text-align:center; color:var(--muted); margin-top:18px; font-size:.9rem }
-
-    @media (max-width:600px){
-      .rsvp{flex-direction:column}
+    footer {
+      text-align:center;
+      color:var(--muted);
+      margin-top:18px;
+      font-size:.9rem;
     }
   </style>
 </head>
+
 <body>
 <header>
   <img src="ícone_Mascote_Zap_PNG.png" alt="Logo Torcida Vasco Paraíba" class="logo">
@@ -101,195 +95,141 @@
 
 <main class="container">
 
+  <!-- PRÓXIMOS JOGOS -->
   <section class="card">
-    <h2>Próximos jogos</h2>
+    <h2>Próximos jogos do Vasco da Gama</h2>
     <table id="fixture">
-      <thead><tr><th>Data</th><th>Confronto</th><th>Competição</th><th>Horário</th></tr></thead>
+      <thead>
+        <tr>
+          <th>Data</th>
+          <th>Confronto</th>
+          <th>Competição</th>
+          <th>Horário</th>
+        </tr>
+      </thead>
       <tbody></tbody>
     </table>
   </section>
 
+  <!-- LISTA DE PRESENÇA -->
   <section class="card">
-    <h2>Confirmação de Presença</h2>
+    <h2>Lista de Presença</h2>
+    <p style="color:var(--muted)">
+      Clique abaixo para confirmar presença informando <strong>nome e telefone</strong>.
+    </p>
 
-    <ol class="small">
-      <li>Pagamento via PIX para: <span class="pix-key" id="pixKeyText">louisecrvg@gmail.com</span></li>
-      <li>Valor por pessoa: <span class="pix-value">R$ 5,00</span></li>
-    </ol>
-
-    <div class="rsvp">
-      <div style="flex:1">
-        <label for="name">Seu nome</label><br>
-        <input id="name" type="text" placeholder="Digite seu nome" disabled>
-        <div class="pix-note small" id="pixNote">O nome será liberado após o envio do comprovante ✅</div>
-      </div>
-
-      <div style="min-width:260px">
-        <button id="copyPixBtn" class="btn btn-primary">Copiar chave PIX e pagar</button><br>
-        <button id="sendProofBtn" class="btn btn-outline" style="margin-top:10px" disabled>Enviar comprovante (WhatsApp)</button><br>
-        <button id="openFormBtn" class="btn btn-outline" style="margin-top:10px" disabled>Clique para colocar o nome</button>
-      </div>
-    </div>
+    <a
+      href="https://forms.gle/krxSqj9UPzAgrpss8"
+      target="_blank"
+      class="btn"
+    >
+      Confirmar Presença
+    </a>
   </section>
 
+  <!-- CONTATO -->
   <section class="card">
     <h2>Contato</h2>
-    <p><strong>Torcida Vasco Paraíba</strong><br>
+    <p>
+      <strong>Torcida Vasco Paraíba</strong><br>
       WhatsApp: (83) 98811-0236<br>
       Email: vascoparaibajogos@gmail.com<br>
-      Instagram: @vascoparaiba_</p>
+      Instagram: @vascoparaiba_
+    </p>
   </section>
 
   <footer>© 2025 Torcida Vasco Paraíba</footer>
 </main>
 
 <script>
-/* === CONFIG === */
+/* === CONTROLE AUTOMÁTICO DOS JOGOS === */
+
+const GAME_DURATION_MINUTES = 135; // 2h15
 
 const fixtures = [
-  { date:"08/11/2025", match:"Vasco x Juventude", comp:"Brasileirão", time:"18:00" },
-  { date:"19/11/2025", match:"Grêmio x Vasco", comp:"Brasileirão", time:"21:30" },
-  { date:"23/11/2025", match:"Bahia x Vasco", comp:"Brasileirão", time:"16:00" },
-  { date:"29/11/2025", match:"Vasco x Internacional", comp:"Brasileirão", time:"12:00" },
+  {
+    date: "26/02/2026",
+    match: "Vasco da Gama x Santos",
+    comp: "Brasileirão Série A",
+    time: "19:00"
+  },
+  {
+    date: "01/03/2026",
+    match: "Fluminense x Vasco da Gama",
+    comp: "Carioca Série A – Semifinal",
+    time: "18:00"
+  },
+  {
+    date: "12/03/2026",
+    match: "Vasco da Gama x Palmeiras",
+    comp: "Brasileirão Série A",
+    time: "19:30"
+  },
+  {
+    date: "15/03/2026",
+    match: "Cruzeiro x Vasco da Gama",
+    comp: "Brasileirão Série A",
+    time: "20:30"
+  },
+  {
+    date: "18/03/2026",
+    match: "Vasco da Gama x Fluminense",
+    comp: "Brasileirão Série A",
+    time: "21:30"
+  },
+  {
+    date: "22/03/2026",
+    match: "Vasco da Gama x Grêmio",
+    comp: "Brasileirão Série A",
+    time: "16:00"
+  },
+  {
+    date: "01/04/2026",
+    match: "Coritiba x Vasco da Gama",
+    comp: "Brasileirão Série A",
+    time: "A confirmar"
+  }
 ];
 
-const FORM_BASE = "https://docs.google.com/forms/d/e/1FAIpQLScwwPCBqI0J9-CwwCEfq9qIp8w0_wSkdhakI-NpynXOKTC5Zg/viewform?usp=pp_url";
-const ENTRY_NAME = "entry.431602813";
-const ENTRY_VALUE = "entry.151240836";
-const PIX_KEY = "louisecrvg@gmail.com";
-const PIX_VALUE = "R$ 5,00";
-const WHATSAPP_PHONE = "5583988110236";
-
-/* === RENDER FIXTURES (remove somente quando iniciar a partida) === */
-
 function parseDateTime(dateStr, timeStr) {
-  const [d,m,y] = dateStr.split('/').map(Number);
-  if (!timeStr || timeStr.toLowerCase().includes("a definir")) {
+  const [d,m,y] = dateStr.split("/").map(Number);
+  if (!timeStr || timeStr.toLowerCase().includes("confirmar")) {
     return new Date(y, m-1, d, 23, 59, 59);
   }
-  const [h,min] = timeStr.split(':').map(Number);
+  const [h,min] = timeStr.split(":").map(Number);
   return new Date(y, m-1, d, h, min, 0);
 }
 
+function gameFinished(game) {
+  const start = parseDateTime(game.date, game.time);
+  const end = new Date(start.getTime() + GAME_DURATION_MINUTES * 60000);
+  return new Date() > end;
+}
+
 function renderFixtures() {
-  const now = new Date();
   const tbody = document.querySelector("#fixture tbody");
   tbody.innerHTML = "";
 
-  // Mantém somente partidas cujo horário de início ainda NÃO foi atingido (se agora for >= início, consideramos que começou e removemos)
-  const futuros = fixtures.filter(f => parseDateTime(f.date, f.time) > now);
-
-  if (!futuros.length) {
-    tbody.innerHTML = "<tr><td colspan='4'>Nenhum jogo futuro.</td></tr>";
-    return;
-  }
+  const futuros = fixtures.filter(game => !gameFinished(game));
 
   futuros.sort((a,b) => parseDateTime(a.date,a.time) - parseDateTime(b.date,b.time));
 
-  futuros.forEach((f, i) => {
+  futuros.forEach((game, i) => {
     const tr = document.createElement("tr");
     if (i === 0) tr.classList.add("next-game");
-    tr.innerHTML = `<td>${f.date}</td><td>${f.match}</td><td>${f.comp}</td><td>${f.time}</td>`;
+    tr.innerHTML = `
+      <td>${game.date.split("/").slice(0,2).join("/")}</td>
+      <td>${game.match}</td>
+      <td>${game.comp}</td>
+      <td>${game.time}</td>
+    `;
     tbody.appendChild(tr);
   });
 }
 
 renderFixtures();
-setInterval(renderFixtures, 15000);
-
-/* === PIX / COPIAR (com fallback) / WHATSAPP / FORM === */
-
-const copyPixBtn = document.getElementById("copyPixBtn");
-const sendProofBtn = document.getElementById("sendProofBtn");
-const openFormBtn = document.getElementById("openFormBtn");
-const nameInput = document.getElementById("name");
-const pixNote = document.getElementById("pixNote");
-document.getElementById("pixKeyText").innerText = PIX_KEY;
-
-/* helper: fallback copy (textarea + execCommand) */
-function fallbackCopyTextToClipboard(text) {
-  return new Promise((resolve, reject) => {
-    try {
-      const textarea = document.createElement("textarea");
-      textarea.value = text;
-      // avoid scrolling to bottom
-      textarea.style.position = "fixed";
-      textarea.style.top = "-9999px";
-      document.body.appendChild(textarea);
-      textarea.focus();
-      textarea.select();
-      const successful = document.execCommand('copy');
-      document.body.removeChild(textarea);
-      if (successful) resolve();
-      else reject(new Error('execCommand returned false'));
-    } catch (err) {
-      reject(err);
-    }
-  });
-}
-
-/* copia de forma robusta */
-async function robustCopy(text) {
-  if (!text) return Promise.reject(new Error('Texto vazio'));
-  // tenta navigator.clipboard primeiro
-  try {
-    if (navigator.clipboard && navigator.clipboard.writeText) {
-      await navigator.clipboard.writeText(text);
-      return;
-    }
-  } catch (e) {
-    // ignora e tenta fallback
-  }
-  // fallback
-  return fallbackCopyTextToClipboard(text);
-}
-
-/* Ação do botão copiar */
-copyPixBtn.addEventListener("click", async () => {
-  copyPixBtn.disabled = true;
-  const original = copyPixBtn.innerText;
-  try {
-    await robustCopy(PIX_KEY);
-    copyPixBtn.innerText = "Chave PIX copiada!";
-    // habilita enviar comprovante
-    sendProofBtn.disabled = false;
-    pixNote.innerText = "Chave copiada. Agora envie o comprovante no WhatsApp.";
-    // opcional: foco no botão enviar comprovante
-    setTimeout(()=> sendProofBtn.focus(), 200);
-  } catch (err) {
-    // se não conseguiu copiar automaticamente, informa e habilita envio para não bloquear o usuário
-    copyPixBtn.innerText = "Copiar manualmente";
-    sendProofBtn.disabled = false;
-    pixNote.innerText = `Não foi possível copiar automaticamente. Copie manualmente: ${PIX_KEY}`;
-    setTimeout(()=> copyPixBtn.innerText = original, 3000);
-  } finally {
-    copyPixBtn.disabled = false;
-  }
-});
-
-/* Enviar comprovante: abre WhatsApp com mensagem; libera campo nome e botão do form */
-sendProofBtn.addEventListener("click", () => {
-  const nomeParaMsg = (nameInput.value && nameInput.value.trim()) ? nameInput.value.trim() : "Torcedor";
-  const mensagem = `Olá, sou ${nomeParaMsg}. Estou enviando o comprovante do PIX (R$ 5,00) para confirmação de presença.`;
-  const url = `https://api.whatsapp.com/send/?phone=${WHATSAPP_PHONE}&text=${encodeURIComponent(mensagem)}&type=phone_number&app_absent=0`;
-  window.open(url, "_blank");
-
-  // liberar o campo nome e o botão do formulário logo após o clique
-  nameInput.disabled = false;
-  openFormBtn.disabled = false;
-  // foco no campo nome pra facilitar
-  setTimeout(()=> nameInput.focus(), 250);
-});
-
-/* Abrir formulário com prefill (nome + valor) */
-openFormBtn.addEventListener("click", () => {
-  const nome = nameInput.value.trim();
-  // monta URL com prefill (FORM_BASE já tem ?usp=pp_url)
-  let url = FORM_BASE;
-  // se já houver parâmetros (usp), usamos & para adicionar entries
-  url += `&${ENTRY_NAME}=${encodeURIComponent(nome)}&${ENTRY_VALUE}=${encodeURIComponent(PIX_VALUE)}`;
-  window.open(url, "_blank");
-});
+setInterval(renderFixtures, 60000); // atualiza a cada 1 min
 </script>
+
 </body>
 </html>
