@@ -88,14 +88,13 @@
 
 <body>
 <header>
-  <img src="ícone_Mascote_Zap_PNG.png" alt="Logo Torcida Vasco Paraíba" class="logo">
+  <img src="ícone_Mascote_Zap_PNG.png" class="logo">
   <h1>VASCO PARAÍBA JOGOS</h1>
   <div class="tagline">A distância é apenas um detalhe</div>
 </header>
 
 <main class="container">
 
-  <!-- PRÓXIMOS JOGOS -->
   <section class="card">
     <h2>Próximos jogos do Vasco da Gama</h2>
     <table id="fixture">
@@ -111,23 +110,17 @@
     </table>
   </section>
 
-  <!-- LISTA DE PRESENÇA -->
   <section class="card">
     <h2>Lista de Presença</h2>
     <p style="color:var(--muted)">
       Clique abaixo para confirmar presença informando <strong>nome e telefone</strong>.
     </p>
 
-    <a
-      href="https://forms.gle/krxSqj9UPzAgrpss8"
-      target="_blank"
-      class="btn"
-    >
+    <a href="https://forms.gle/krxSqj9UPzAgrpss8" target="_blank" class="btn">
       Confirmar Presença
     </a>
   </section>
 
-  <!-- CONTATO -->
   <section class="card">
     <h2>Contato</h2>
     <p>
@@ -142,52 +135,44 @@
 </main>
 
 <script>
-/* === CONTROLE AUTOMÁTICO DOS JOGOS === */
-
-const GAME_DURATION_MINUTES = 135; // 2h15
+const GAME_DURATION_MINUTES = 135;
 
 const fixtures = [
   {
-    date: "26/02/2026",
-    match: "Vasco da Gama x Santos",
-    comp: "Brasileirão Série A",
-    time: "19:00"
-  },
-  {
-    date: "01/03/2026",
-    match: "Fluminense x Vasco da Gama",
-    comp: "Carioca Série A – Semifinal",
-    time: "18:00"
-  },
-  {
-    date: "12/03/2026",
-    match: "Vasco da Gama x Palmeiras",
-    comp: "Brasileirão Série A",
-    time: "19:30"
-  },
-  {
-    date: "15/03/2026",
-    match: "Cruzeiro x Vasco da Gama",
+    date: "01/04/2026",
+    match: "Coritiba x VASCO DA GAMA",
     comp: "Brasileirão Série A",
     time: "20:30"
   },
   {
-    date: "18/03/2026",
-    match: "Vasco da Gama x Fluminense",
+    date: "04/04/2026",
+    match: "VASCO DA GAMA x Botafogo",
     comp: "Brasileirão Série A",
-    time: "21:30"
+    time: "21:00"
   },
   {
-    date: "22/03/2026",
-    match: "Vasco da Gama x Grêmio",
-    comp: "Brasileirão Série A",
-    time: "16:00"
+    date: "07/04/2026",
+    match: "Barracas Central x VASCO DA GAMA",
+    comp: "CONMEBOL Sul-Americana",
+    time: "19:00"
   },
   {
-    date: "01/04/2026",
-    match: "Coritiba x Vasco da Gama",
+    date: "11/04/2026",
+    match: "Remo x VASCO DA GAMA",
     comp: "Brasileirão Série A",
-    time: "A confirmar"
+    time: "16:30"
+  },
+  {
+    date: "14/04/2026",
+    match: "VASCO DA GAMA x Audax Italiano",
+    comp: "CONMEBOL Sul-Americana",
+    time: "21:00"
+  },
+  {
+    date: "18/04/2026",
+    match: "VASCO DA GAMA x São Paulo",
+    comp: "Brasileirão Série A",
+    time: "18:30"
   }
 ];
 
@@ -228,7 +213,7 @@ function renderFixtures() {
 }
 
 renderFixtures();
-setInterval(renderFixtures, 60000); // atualiza a cada 1 min
+setInterval(renderFixtures, 60000);
 </script>
 
 </body>
